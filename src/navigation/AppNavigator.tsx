@@ -8,8 +8,11 @@ import { PermissionScreen } from '../screens/auth/PermissionScreen';
 import { ContactScreen } from '../screens/auth/ContactScreen';
 import { NotificationScreen } from '../screens/NotificationScreen';
 import { CameraScreen } from '../screens/CameraScreen';
-import { HomeScreen } from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import { SplashScreen } from '../screens/SplashScreen';
+import { ResultScreen } from '../screens/ResultScreen';
+import { FriendsProfileScreen } from '../screens/FriendsProfileScreen';
+import { LeaderboardScreen } from '../screens/LeaderboardScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -28,6 +31,9 @@ export type RootStackParamList = {
   Home: undefined;
   Notification: undefined;
   Camera: undefined;
+  Result: undefined;
+  FriendsProfile: undefined;
+  Leaderboard: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -54,6 +60,9 @@ export const AppNavigator = () => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Notification" component={NotificationScreen} />
       <Stack.Screen name="Camera" component={CameraScreen} />
+      <Stack.Screen name="Result" component={ResultScreen} />
+      <Stack.Screen name="FriendsProfile" component={FriendsProfileScreen} />
+      <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
     </Stack.Navigator>
   );
 }; 

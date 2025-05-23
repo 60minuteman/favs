@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   dontAllowButtonText: {
     fontSize: 16,
     fontFamily: fonts.medium,
-    color: '#007AFF',
+    color: '#2196F3',
   },
   allowButton: {
     flex: 1,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#2196F3',
   },
   allowButtonText: {
     color: '#FFFFFF',

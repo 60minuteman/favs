@@ -16,6 +16,19 @@
     ],
     "experiments": {
       "tsconfigPaths": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9586bac3-1bf0-4073-90b7-a0f0d90840ba"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9586bac3-1bf0-4073-90b7-a0f0d90840ba"
+    },
+    "android": {},
+    "ios": {}
   }
 }

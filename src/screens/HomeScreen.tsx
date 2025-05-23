@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import type { RootStackScreenProps } from '../navigation/AppNavigator';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import { TabBar } from '../components/TabBar';
 import { Orbit } from '../components/Orbit';
+import { ExploreView } from '../components/ExploreView';
 import { fonts } from '../utils/fonts';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-type Props = RootStackScreenProps<'Home'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const tabs = [
   { key: 'home', title: 'Home' },
@@ -23,26 +25,37 @@ const orbitItems = [
   { id: 6, image: require('../assets/images/profile-placeholder.png') },
 ];
 
-export const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const HomeScreen = ({ navigation }: Props) => {
   const [activeTab, setActiveTab] = useState('home');
 
   const handleTabChange = (tabKey: string) => {
     setActiveTab(tabKey);
   };
 
-  return (
-    <View style={styles.container}>
-      <Image 
-        source={require('../assets/images/bg.png')}
-        style={styles.background}
-        resizeMode="cover"
-      />
-      <View style={styles.content}>
-        <TabBar 
-          tabs={tabs}
-          onTabChange={handleTabChange}
-        />
-        
+  const handleScanPress = () => {
+    navigation.navigate('Camera');
+  };
+
+  const handleSearchPress = () => {
+    navigation.navigate('Result');
+  };
+
+  const handleImagePress = (imageId: string) => {
+    // Handle image press in explore view
+    console.log('Image pressed:', imageId);
+  };
+
+  const handleLeaderboardPress = () => {
+    navigation.navigate('Leaderboard');
+  };
+
+  const renderContent = () => {
+    if (activeTab === 'explore') {
+      return <ExploreView onImagePress={handleImagePress} />;
+    }
+
+    return (
+      <>
         <Text style={styles.title}>AURASCOPE</Text>
 
         <View style={styles.orbitContainer}>
@@ -58,18 +71,39 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.scanningText}>START SCANNING</Text>
           <Text style={styles.statsText}>today: 0 | scans: 0</Text>
           <Text style={styles.statsText}>following 0 | follower 0</Text>
+          <TouchableOpacity onPress={handleLeaderboardPress}>
+            <Text style={styles.leaderboardText}>View Leaderboard</Text>
+          </TouchableOpacity>
         </View>
+      </>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <Image 
+        source={require('../assets/images/bg.png')}
+        style={styles.background}
+        resizeMode="cover"
+      />
+      <View style={styles.content}>
+        <TabBar 
+          tabs={tabs}
+          onTabChange={handleTabChange}
+        />
+        
+        {renderContent()}
 
         <View style={styles.bottomBar}>
           <TouchableOpacity style={styles.iconButton}>
             <MaterialIcons name="photo-library" size={24} color="black" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.scanButton}>
+          <TouchableOpacity style={styles.scanButton} onPress={handleScanPress}>
             <Text style={styles.scanButtonText}>SCAN</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={handleSearchPress}>
             <Ionicons name="search" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -114,7 +148,7 @@ const styles = StyleSheet.create({
   scanningText: {
     fontSize: 32,
     fontFamily: fonts.bold,
-    color: '#007AFF',
+    color: '#2196F3',
     marginBottom: 10,
   },
   statsText: {
@@ -123,12 +157,18 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 5,
   },
+  leaderboardText: {
+    fontSize: 15,
+    fontFamily: fonts.medium,
+    color: '#007AFF',
+    marginTop: 10,
+  },
   bottomBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 30,
-    paddingBottom: 30,
+    paddingHorizontal: 60,
+    paddingBottom: 50,
   },
   iconButton: {
     width: 44,
@@ -140,7 +180,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#2196F3',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -150,3 +190,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.semiBold,
   },
 });
+
+export default HomeScreen;

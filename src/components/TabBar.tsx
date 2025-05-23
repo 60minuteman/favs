@@ -1,59 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
+  AccessibilityRole,
+  Platform,
+  ViewStyle,
 } from 'react-native';
 import { fonts } from '../utils/fonts';
 
-type Tab = {
+export interface TabItem {
   key: string;
   title: string;
-};
+  accessibilityLabel?: string;
+  testID?: string;
+}
 
-type Props = {
-  tabs: Tab[];
+export interface TabBarProps {
+  tabs: TabItem[];
   onTabChange: (tabKey: string) => void;
-};
+  initialTab?: string;
+  style?: any;
+  activeTabColor?: string;
+  inactiveTabColor?: string;
+  backgroundColor?: string;
+}
 
-export const TabBar: React.FC<Props> = ({ tabs, onTabChange }) => {
-  const [activeTab, setActiveTab] = useState(tabs[0].key);
+const TabBarComponent: React.FC<TabBarProps> = ({
+  tabs,
+  onTabChange,
+  initialTab,
+  style,
+  activeTabColor = '#FFFFFF',
+  inactiveTabColor = 'rgba(0, 0, 0, 0.1)',
+  backgroundColor = 'rgba(0, 0, 0, 0.1)',
+}) => {
+  const [activeTab, setActiveTab] = useState(initialTab ?? tabs[0].key);
   const { width } = useWindowDimensions();
   const tabWidth = (width - 40) / tabs.length;
 
-  const handleTabPress = (tab: Tab) => {
+  const handleTabPress = useCallback((tab: TabItem) => {
     setActiveTab(tab.key);
     onTabChange(tab.key);
-  };
+  }, [onTabChange]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.tabsContainer}>
-        {tabs.map((tab, index) => (
-          <TouchableOpacity
-            key={tab.key}
-            style={[
-              styles.tab,
-              { width: tabWidth },
-              activeTab === tab.key && styles.activeTab,
-              index === 0 && styles.leftTab,
-              index === tabs.length - 1 && styles.rightTab,
-            ]}
-            onPress={() => handleTabPress(tab)}
-            activeOpacity={0.7}
-          >
-            <Text
+    <View style={[styles.container, style]} accessibilityRole="tablist">
+      <View style={[styles.tabsContainer, { backgroundColor }]}>
+        {tabs.map((tab, index) => {
+          const isActive = activeTab === tab.key;
+          const isFirstTab = index === 0;
+          const isLastTab = index === tabs.length - 1;
+
+          return (
+            <TouchableOpacity
+              key={tab.key}
               style={[
-                styles.tabText,
-                activeTab === tab.key && styles.activeTabText,
+                styles.tab,
+                { width: tabWidth },
+                isActive && [styles.activeTab, { backgroundColor: activeTabColor }],
+                isFirstTab && styles.leftTab,
+                isLastTab && styles.rightTab,
               ]}
+              onPress={() => handleTabPress(tab)}
+              activeOpacity={0.7}
+              accessibilityRole="tab"
+              accessibilityLabel={tab.accessibilityLabel || `${tab.title} tab`}
+              accessibilityState={{ selected: isActive }}
+              testID={tab.testID || `tab-${tab.key}`}
             >
-              {tab.title.toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-        ))}
+              <Text
+                style={[
+                  styles.tabText,
+                  isActive && styles.activeTabText,
+                  !isActive && { opacity: 0.5 },
+                ]}
+                numberOfLines={1}
+              >
+                {tab.title.toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );
@@ -67,7 +97,6 @@ const styles = StyleSheet.create({
   tabsContainer: {
     flexDirection: 'row',
     height: 40,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     borderRadius: 12,
     padding: 4,
   },
@@ -76,16 +105,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activeTab: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   leftTab: {
     borderTopLeftRadius: 10,
@@ -99,10 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.medium,
     color: '#000',
-    opacity: 0.5,
     letterSpacing: 0.5,
   },
   activeTabText: {
     opacity: 1,
+    fontFamily: fonts.semiBold,
   },
 });
+
+export const TabBar = memo(TabBarComponent);

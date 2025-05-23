@@ -23,7 +23,7 @@ export const CameraScreen: React.FC = () => {
 
   if (!permission) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.centeredContainer]}>
         <Text style={styles.text}>Requesting camera permission...</Text>
       </View>
     );
@@ -31,7 +31,7 @@ export const CameraScreen: React.FC = () => {
 
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, styles.centeredContainer]}>
         <Text style={styles.text}>We need your permission to show the camera</Text>
         <TouchableOpacity style={styles.button} onPress={requestPermission}>
           <Text style={styles.buttonText}>Grant Permission</Text>
@@ -144,6 +144,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+  },
+  centeredContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   camera: {
     flex: 1,

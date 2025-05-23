@@ -183,12 +183,12 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     marginTop: 10,
-    color: '#007AFF',
+    color: '#2196F3',
     fontSize: 16,
     fontFamily: fonts.regular,
   },
   resend: {
-    color: '#007AFF',
+    color: '#2196F3',
     marginTop: 20,
     fontSize: 14,
     textAlign: 'center',

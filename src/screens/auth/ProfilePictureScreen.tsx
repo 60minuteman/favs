@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     color: '#007AFF',
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#2196F3',
     borderRadius: 14,
     height: 56,
     width: '100%',
