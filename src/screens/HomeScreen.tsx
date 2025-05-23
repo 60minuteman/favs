@@ -96,7 +96,10 @@ const HomeScreen = ({ navigation }: Props) => {
 
         <View style={styles.bottomBar}>
           <TouchableOpacity style={styles.iconButton}>
-            <MaterialIcons name="photo-library" size={24} color="black" />
+            <Image 
+              source={require('../assets/icons/gallery.png')} 
+              style={[styles.controlIcon, {tintColor: '#000'}]} 
+            />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.scanButton} onPress={handleScanPress}>
@@ -188,6 +191,10 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 15,
     fontFamily: fonts.semiBold,
+  },
+  controlIcon: {
+    width: 32,
+    height: 32,
   },
 });
 

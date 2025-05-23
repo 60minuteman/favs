@@ -13,6 +13,7 @@ import { SplashScreen } from '../screens/SplashScreen';
 import { ResultScreen } from '../screens/ResultScreen';
 import { FriendsProfileScreen } from '../screens/FriendsProfileScreen';
 import { LeaderboardScreen } from '../screens/LeaderboardScreen';
+import { ImagePreviewScreen } from '../screens/ImagePreviewScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -31,6 +32,9 @@ export type RootStackParamList = {
   Home: undefined;
   Notification: undefined;
   Camera: undefined;
+  ImagePreview: {
+    imageUri: string;
+  };
   Result: undefined;
   FriendsProfile: undefined;
   Leaderboard: undefined;
@@ -60,6 +64,7 @@ export const AppNavigator = () => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Notification" component={NotificationScreen} />
       <Stack.Screen name="Camera" component={CameraScreen} />
+      <Stack.Screen name="ImagePreview" component={ImagePreviewScreen} />
       <Stack.Screen name="Result" component={ResultScreen} />
       <Stack.Screen name="FriendsProfile" component={FriendsProfileScreen} />
       <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />

@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Notification: undefined;
   Home: undefined;
   Camera: undefined;
+  Preview: { imageUri: string };
   GradientTest: undefined;
 };
 
